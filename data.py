@@ -1,5 +1,6 @@
 import os
 import mysql.connector
+import traceback
 conn = mysql.connector.connect(user='root', password='1234567890',
                               host='127.0.0.1',
                               database='data')
@@ -69,15 +70,18 @@ def read_to_mysql(dir,sql,table,start,end):
             param = []
             for l in list:
                 param.append(l.replace('\t',''))
+            if len(list ) < 2:
+                print list
             if i % 10000 == 0 :
-                print param
+                print i
             i+=1
             try:
                 cursor.execute(sql,param)
             except KeyboardInterrupt:
                 break
-            except :
-                pass
+            except Exception,e:
+                print e
+                print traceback.format_exc()
             else:
                 pass
             finally:
@@ -89,4 +93,4 @@ def read_to_mysql(dir,sql,table,start,end):
 
 read_to_mysql(dir2,mysql_insert_17173,'17173',0,4)
 
-read_to_mysql(dir3,mysql_insert_178,'178',1,3)
+#read_to_mysql(dir3,mysql_insert_178,'178',1,3)
