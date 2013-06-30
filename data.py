@@ -24,8 +24,9 @@ def read_to_mysql(dir,explode,table,start,end):
         while len(line) > 0 :
             line = line.rstrip('\n')
             list = line.split(explode)
-            print list
-
+            if i % 10000 == 0 :
+                print i
+            i+=1
             line = file.readline()
             params = []
             params.append(table)
@@ -35,7 +36,7 @@ def read_to_mysql(dir,explode,table,start,end):
             except KeyboardInterrupt:
                 break
             except Exception, e:
-                raise
+                pass
             else:
                 pass
             finally:
