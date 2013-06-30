@@ -1,23 +1,23 @@
 import os
-import MySQLdb
-
-conn = MySQLdb.connect(host='127.0.0.1', user='root',passwd='1234567890')
-conn.select_db('data')
+import mysql.connector
+conn = mysql.connector.connect(user='root', password='asdfghjkl',
+                              host='192.168.1.100',
+                              database='data')
 cursor = conn.cursor()
 
 altnat_explode = ['|',',']
 
-dir1 = '/home/wangyang/data/7k7k/2000-1/'
-dir2 = '/home/wangyang/data/17173_6208/'
-dir3 = '/home/wangyang/data/178/'
+dir1 = 'D:\\database\\7k7k\\2000-1\\'
+dir2 = 'D:\\database\\17173_6208\\'
+dir3 = 'D:\\database\\178\\'
 
-mysql_insert = "insert into `%s` (account,password) values (%s,%s)"
+mysql_insert_178 = "insert into `178` (account,password) values (%s,%s)"
 mysql_insert_17173 = "insert into `%s` (account,password,email,clearpassword) values (%s,%s,%s,%s)"
 
 def read_to_mysql(dir,sql,table,start,end):
     i =0;
 
-    cursor.execute("truncate table %s",table)
+    cursor.execute("TRUNCATE `%s` " %(table))
     for filename in os.listdir(dir):
         print filename
         filepath = dir+filename
@@ -31,17 +31,17 @@ def read_to_mysql(dir,sql,table,start,end):
                 explode = exp
         while len(line) > 0 :
             line = line.rstrip('\n')
-            list = line.split(explode)
+            if explode == '':
+                list = line.split()
+            else:
+                list = line.split(explode)
             list = list[start:end]
 
             if i % 10000 == 0 :
                 print i
             i+=1
-            params = []
-            params.append(table)
-            params.extend(list)
             try:
-                cursor.execute(sql,params)
+                cursor.execute(sql,list)
             except KeyboardInterrupt:
                 break
             except :
@@ -55,6 +55,6 @@ def read_to_mysql(dir,sql,table,start,end):
 
 # read_to_mysql(dir1,'\t','7k7k',0,2)
 
-read_to_mysql(dir2,mysql_insert_17173,'17173',0,4)
+# read_to_mysql(dir2,mysql_insert_17173,'17173',0,4)
 
-read_to_mysql(dir3,mysql_insert,'178',1,3)
+read_to_mysql(dir3,mysql_insert_178,'178',1,3)
