@@ -10,8 +10,9 @@ altnat_explode = ['|',',']
 datadir = "/home/wangyang/data/"
 
 dir1 = datadir+'7k7k/2000-1/'
-dir2 = datadir+'17173_6208/'
+dir2 = datadir+'17173/'
 dir3 = datadir+'178/'
+dir4 = datadir+'tianya/'
 
 mysql_create_7k7k = """CREATE TABLE IF NOT EXISTS `7k7k`(  
                     `id` INT(10) NOT NULL AUTO_INCREMENT,
@@ -33,13 +34,22 @@ mysql_create_17173 = """CREATE TABLE IF NOT EXISTS `17173`(
                     `password_md5` VARCHAR(50),
                     PRIMARY KEY (`id`)
                     );"""
+mysql_create_tianya = """CREATE TABLE IF NOT EXISTS `tianya`(  
+                    `id` INT(10) NOT NULL AUTO_INCREMENT,
+                    `account` VARCHAR(50),
+                    `password` VARCHAR(50),
+                    `email` VARCHAR(50),
+                    PRIMARY KEY (`id`)
+                    );"""
 cursor.execute(mysql_create_17173)
 cursor.execute(mysql_create_7k7k)
 cursor.execute(mysql_create_178)
+cursor.execute(mysql_create_tianya)
 
 mysql_insert_7k7k = "insert into `7k7k` (account,password) values (%s,%s)"
 mysql_insert_178 = "insert into `178` (account,password) values (%s,%s)"
 mysql_insert_17173 = "insert into `17173` (account,password_md5,email,password) values (%s,%s,%s,%s)"
+mysql_insert_tianya = "insert into `tianya` (account,password,email) values (%s,%s,%s)"
 
 
 def read_to_mysql(dir,sql,table,start,end):
@@ -94,3 +104,5 @@ def read_to_mysql(dir,sql,table,start,end):
 read_to_mysql(dir2,mysql_insert_17173,'17173',0,4)
 
 #read_to_mysql(dir3,mysql_insert_178,'178',1,3)
+
+#read_to_mysql(dir4,mysql_insert_tianya,'tianya',0,3)
