@@ -13,7 +13,10 @@ dir1 = datadir+'7k7k/2000-1/'
 dir2 = datadir+'17173/'
 dir3 = datadir+'178/'
 dir4 = datadir+'tianya/'
-dir5 = datadir+'duduniu'
+dir5 = datadir+'duduniu/'
+dir6 = datadir+'taipingyang/'
+dir7 = datadir+'weibo/'
+dir8 = datadir+'renren/'
 
 mysql_create_7k7k = """CREATE TABLE IF NOT EXISTS `7k7k`(  
                     `id` INT(10) NOT NULL AUTO_INCREMENT,
@@ -50,17 +53,41 @@ mysql_create_duduniu = """CREATE TABLE IF NOT EXISTS `duduniu`(
                     PRIMARY KEY (`id`)
                     );"""
 
+mysql_create_taipingyang = """CREATE TABLE IF NOT EXISTS `taipingyang`(  
+                    `id` INT(10) NOT NULL AUTO_INCREMENT,
+                    `account` VARCHAR(50),
+                    `password` VARCHAR(50),
+                    `email` VARCHAR(50),
+                    PRIMARY KEY (`id`)
+                    );"""
+mysql_create_weibo = """CREATE TABLE IF NOT EXISTS `weibo`(  
+                    `id` INT(10) NOT NULL AUTO_INCREMENT,
+                    `account` VARCHAR(50) unique,
+                    `password` VARCHAR(50),
+                    PRIMARY KEY (`id`)
+                    );"""
+mysql_create_renren = """CREATE TABLE IF NOT EXISTS `renren`(  
+                    `id` INT(10) NOT NULL AUTO_INCREMENT,
+                    `account` VARCHAR(50) unique,
+                    `password` VARCHAR(50),
+                    PRIMARY KEY (`id`)
+                    );"""
 cursor.execute(mysql_create_17173)
 cursor.execute(mysql_create_7k7k)
 cursor.execute(mysql_create_178)
 cursor.execute(mysql_create_tianya)
 cursor.execute(mysql_create_duduniu)
-
+cursor.execute(mysql_create_taipingyang)
+cursor.execute(mysql_create_weibo)
+cursor.execute(mysql_create_renren)
 mysql_insert_7k7k = "insert into `7k7k` (account,password) values (%s,%s)"
 mysql_insert_178 = "insert into `178` (account,password) values (%s,%s)"
 mysql_insert_17173 = "insert into `17173` (account,password_md5,email,password) values (%s,%s,%s,%s)"
 mysql_insert_tianya = "insert into `tianya` (account,password,email) values (%s,%s,%s)"
 mysql_insert_duduniu = "insert into `duduniu` (account,password,email) values (%s,%s,%s)"
+mysql_insert_taipingyang = "insert into `taipingyang` (account,password,email) values (%s,%s,%s)"
+mysql_insert_weibo = "insert into `weibo` (account,password) values (%s,%s)"
+mysql_insert_renren = "insert into `renren` (account,password) values (%s,%s)"
 
 
 def read_to_mysql(dir,sql,table,start,end):
@@ -118,4 +145,10 @@ def read_to_mysql(dir,sql,table,start,end):
 
 #read_to_mysql(dir4,mysql_insert_tianya,'tianya',0,3)
 
-read_to_mysql(dir5,mysql_insert_duduniu,'duduniu',0,3)
+# read_to_mysql(dir5,mysql_insert_duduniu,'duduniu',0,3)
+
+read_to_mysql(dir6,mysql_insert_taipingyang,'taipingyang',0,3)
+
+read_to_mysql(dir7,mysql_insert_weibo,'weibo',0,3)
+
+read_to_mysql(dir8,mysql_insert_renren,'renren',0,3)
