@@ -17,6 +17,9 @@ dir5 = datadir+'duduniu/'
 dir6 = datadir+'taipingyang/'
 dir7 = datadir+'weibo/'
 dir8 = datadir+'renren/'
+dir9 = datadir+'aipai/'
+dir10 = datadir+'mop/'
+
 
 mysql_create_7k7k = """CREATE TABLE IF NOT EXISTS `7k7k`(  
                     `id` INT(10) NOT NULL AUTO_INCREMENT,
@@ -72,6 +75,20 @@ mysql_create_renren = """CREATE TABLE IF NOT EXISTS `renren`(
                     `password` VARCHAR(50),
                     PRIMARY KEY (`id`)
                     );"""
+mysql_create_aipai = """CREATE TABLE IF NOT EXISTS `renren`(  
+                    `id` INT(10) NOT NULL AUTO_INCREMENT,
+                    `account` VARCHAR(50) unique,
+                    `password` VARCHAR(50),
+                    `email` VARCHAR(50),
+                    PRIMARY KEY (`id`)
+                    );"""
+mysql_create_mop = """CREATE TABLE IF NOT EXISTS `renren`(  
+                    `id` INT(10) NOT NULL AUTO_INCREMENT,
+                    `account` VARCHAR(50) unique,
+                    `password` VARCHAR(50),
+                    PRIMARY KEY (`id`)
+                    );"""
+
 cursor.execute(mysql_create_17173)
 cursor.execute(mysql_create_7k7k)
 cursor.execute(mysql_create_178)
@@ -80,6 +97,8 @@ cursor.execute(mysql_create_duduniu)
 cursor.execute(mysql_create_taipingyang)
 cursor.execute(mysql_create_weibo)
 cursor.execute(mysql_create_renren)
+cursor.execute(mysql_create_aipai)
+cursor.execute(mysql_create_mop)
 mysql_insert_7k7k = "insert into `7k7k` (account,password) values (%s,%s)"
 mysql_insert_178 = "insert into `178` (account,password) values (%s,%s)"
 mysql_insert_17173 = "insert into `17173` (account,password_md5,email,password) values (%s,%s,%s,%s)"
@@ -88,11 +107,13 @@ mysql_insert_duduniu = "insert into `duduniu` (account,password,email) values (%
 mysql_insert_taipingyang = "insert into `taipingyang` (account,password,email) values (%s,%s,%s)"
 mysql_insert_weibo = "insert into `weibo` (account,password) values (%s,%s)"
 mysql_insert_renren = "insert into `renren` (account,password) values (%s,%s)"
+mysql_insert_aipai = "insert into `aipai` (account,password,email) values (%s,%s)"
+mysql_insert_mop = "insert into `mop` (account,password) values (%s,%s)"
 
 
 def read_to_mysql(dir,sql,table,start,end):
     i =0;
-
+    paramnum = end - start
     cursor.execute("TRUNCATE `%s` " %(table))
     for filename in os.listdir(dir):
         print filename
@@ -118,8 +139,10 @@ def read_to_mysql(dir,sql,table,start,end):
             param = []
             for l in list:
                 param.append(l.replace('\t',''))
-            if len(list ) < 2:
+            if len(list ) < paramnum:
                 print list
+            if len(list) == paramnum - 1:
+                param.append('');
             if i % 10000 == 0 :
                 print i
             i+=1
@@ -147,8 +170,12 @@ def read_to_mysql(dir,sql,table,start,end):
 
 # read_to_mysql(dir5,mysql_insert_duduniu,'duduniu',0,3)
 
-read_to_mysql(dir6,mysql_insert_taipingyang,'taipingyang',0,3)
+# read_to_mysql(dir6,mysql_insert_taipingyang,'taipingyang',0,3)
 
-read_to_mysql(dir7,mysql_insert_weibo,'weibo',0,3)
+# read_to_mysql(dir7,mysql_insert_weibo,'weibo',0,3)
 
-read_to_mysql(dir8,mysql_insert_renren,'renren',0,3)
+# read_to_mysql(dir8,mysql_insert_renren,'renren',0,3)
+
+read_to_mysql(dir9,mysql_insert_aipai,'aipai',0,3)
+
+read_to_mysql(dir10,mysql_insert_mop,'mop',0,2)
