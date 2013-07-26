@@ -179,3 +179,4 @@ def read_to_mysql(dir,sql,table,start,end):
 read_to_mysql(dir9,mysql_insert_aipai,'aipai',0,3)
 
 read_to_mysql(dir10,mysql_insert_mop,'mop',0,2)
+ 
