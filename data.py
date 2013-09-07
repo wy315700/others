@@ -1,7 +1,7 @@
 import os
 import mysql.connector
 import traceback
-conn = mysql.connector.connect(user='root', password='1234567890',
+conn = mysql.connector.connect(user='root', password='asdfghjkl',
                               host='127.0.0.1',
                               database='data')
 cursor = conn.cursor()
@@ -21,6 +21,8 @@ dir9 = datadir+'aipai/'
 dir10 = datadir+'mop/'
 dir11 = 'ecnu/'
 dir12 = 'yiban/'
+dir13 = 'ecnu_student/'
+dir14 = 'ecnu_teacher/'
 
 mysql_create_7k7k = """CREATE TABLE IF NOT EXISTS `7k7k`(  
                     `id` INT(10) NOT NULL AUTO_INCREMENT,
@@ -104,6 +106,7 @@ mysql_create_ecnu_student = """CREATE TABLE IF NOT EXISTS `ecnu_student`(
                     `id` INT(10) NOT NULL AUTO_INCREMENT,
                     `sid` VARCHAR(50) unique,
                     `realname` VARCHAR(50),
+                    `pastname` VARCHAR(50),
                     `gender` VARCHAR(50),
                     `identify` VARCHAR(50),
                     `homephone` VARCHAR(50),
@@ -113,10 +116,43 @@ mysql_create_ecnu_student = """CREATE TABLE IF NOT EXISTS `ecnu_student`(
                     `yuanxi` VARCHAR(50),
                     `zhuanye` VARCHAR(50),
                     `type` VARCHAR(50),
-                    `begintime` VARCHAR(50),
+                    `grade` VARCHAR(50),
+                    `class` VARCHAR(50),
+                    `borndate` VARCHAR(50),
+                    `bornplace` VARCHAR(50),
+                    `nationality` VARCHAR(50),
+                    `studytype` VARCHAR(50),
+                    `homeaddress` VARCHAR(500),
+                    `nowaddress` VARCHAR(500),
+                    `political` VARCHAR(50),
+                    `family` VARCHAR(500),
+                    `history` VARCHAR(500),
+                    `homeprovince` VARCHAR(50),
+                    `status` VARCHAR(50),
+                    `schoolplace` VARCHAR(500),
                     `password` VARCHAR(50),
                     PRIMARY KEY (`id`)
                     );"""
+mysql_create_ecnu_teacher = """CREATE TABLE IF NOT EXISTS `ecnu_teacher`(  
+                    `id` INT(10) NOT NULL AUTO_INCREMENT,
+                    `sid` VARCHAR(50) unique,
+                    `realname` VARCHAR(50),
+                    `gender` VARCHAR(50),
+                    `borndate` VARCHAR(50),
+                    `political` VARCHAR(50),
+                    `identify` VARCHAR(50),
+                    `homephone` VARCHAR(50),
+                    `email` VARCHAR(50),
+                    `nationality` VARCHAR(50),
+                    `yuanxi` VARCHAR(50),
+                    `xueli` VARCHAR(50),
+                    `xuelicountry` VARCHAR(50),
+                    `xuewei` VARCHAR(50),
+                    `huji` VARCHAR(50),
+                    `youbian` VARCHAR(50),
+                    PRIMARY KEY (`id`)
+                    );"""
+
 mysql_create_yiban = """CREATE TABLE IF NOT EXISTS `yiban`(  
                     `id` INT(10) NOT NULL,
                     `account` VARCHAR(50),
@@ -137,6 +173,10 @@ cursor.execute(mysql_create_renren)
 cursor.execute(mysql_create_aipai)
 cursor.execute(mysql_create_mop)
 cursor.execute(mysql_create_yiban)
+cursor.execute(mysql_create_ecnu_student)
+cursor.execute(mysql_create_ecnu_teacher)
+
+
 mysql_insert_7k7k = "insert into `7k7k` (account,password) values (%s,%s)"
 mysql_insert_178 = "insert into `178` (account,password) values (%s,%s)"
 mysql_insert_17173 = "insert into `17173` (account,password_md5,email,password) values (%s,%s,%s,%s)"
@@ -149,6 +189,9 @@ mysql_insert_aipai = "insert into `aipai` (account,password,email) values (%s,%s
 mysql_insert_mop = "insert into `mop` (account,password) values (%s,%s)"
 mysql_insert_ecnu = "insert into `ecnu` (account,realname,identify,email,password) values (%s,%s,%s,%s,%s)"
 mysql_insert_yiban = "insert into `yiban` (id,account,password,lasttime,lastip) values (%s,%s,%s,%s,%s)"
+mysql_insert_ecnu_student = "insert into `ecnu_student` (`password`,`sid`,`realname`,`pastname`,`gender`,`identify`,`homephone`,`cellphone`,`otherphone`,`email`,`yuanxi`,`zhuanye`,`type`,`grade`,`class`,`borndate`,`bornplace`,`nationality`,`studytype`,`homeaddress`,`nowaddress`,`political`,`family`,`history`,`homeprovince`,`status`,`schoolplace`) values (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
+mysql_insert_ecnu_teacher = "insert into `ecnu_teacher` (`sid`,`realname`,`gender`,`borndate`,`political`,`identify`,`homephone`,`email`,`nationality`,`yuanxi`,`xueli`,`xuelicountry`,`xuewei`,`huji`,`youbian`) values (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
+
 
 
 def read_to_mysql(dir,sql,table,start,end):
@@ -172,7 +215,7 @@ def read_to_mysql(dir,sql,table,start,end):
             line = line.replace('\n','')
             line = line.replace('\r','')
             if explode == '':
-                list = line.split()
+                list = line.split('\t')
             else:
                 list = line.split(explode)
 
@@ -226,4 +269,8 @@ def read_to_mysql(dir,sql,table,start,end):
 
 # read_to_mysql(dir11,mysql_insert_ecnu,'ecnu',0,5)
 
-read_to_mysql(dir12,mysql_insert_yiban,'yiban',0,5)
+# read_to_mysql(dir12,mysql_insert_yiban,'yiban',0,5)
+
+# read_to_mysql(dir13,mysql_insert_ecnu_student,'ecnu_student',0,27)
+
+read_to_mysql(dir14,mysql_insert_ecnu_teacher,'ecnu_teacher',0,15)
