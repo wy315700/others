@@ -11,9 +11,9 @@ ACTIONS = {
 }
 # Thanks to Claudio Grondi for the correct set of numbers
 FILE_LIST_DIRECTORY = 0x0001
-path_to_watch = "D:\\Github\\nagenet-git\\website\\include\\"
+path_to_watch = "D:\\Github\\wechat\\mysite\\"
 
-path_to_copy = "D:\\svn\\testiin2\\2\\include\\"
+path_to_copy = "D:\\svn\\wcservice\\1\\"
 
 hDir = win32file.CreateFile (
   path_to_watch,
@@ -57,6 +57,6 @@ while 1:
 
     dist_file = path_to_copy + filename
 
-    print 'CopyFile to 'dist_file
+    print 'CopyFile to ' + dist_file
 
     win32file.CopyFile (full_filename, dist_file, 0)

@@ -24,8 +24,8 @@ while len(line) > 0 :
     line = line.replace('\n','')
     line = line.replace('\r','')
     list = line.split("\t")
-    if list[1] in dic:
-        line = line + "\t" +  dic.get(list[1])
+    if list[4] in dic:
+        line = line + ":" +  dic.get(list[4])
     line += "\n"
     out_file.writelines(line)
     line = source_file.readline()
